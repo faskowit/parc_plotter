@@ -1,9 +1,9 @@
-function [ dir_ind ] = vals_2_direct_inds(dataVec,num_bins,val_unkwn,val_range)
+function [ dir_ind, outRange ] = vals_2_direct_inds(dataVec,num_bins,val_unkwn,val_range)
 % vals to inds
 %
 % J.Faskowitz
 % Indiana University
-% Computational Cognitive Neurosciene Lab
+% Computational Cognitive Neuroscience Lab
 % See LICENSE file for license
 
 if nargin < 2
@@ -43,18 +43,27 @@ else
     lower_lim = val_range(1) ;
 end
 
-% trim data
-trim_val = valid_val .* 1 ;
-trim_val(trim_val > upper_lim) = upper_lim ;
-trim_val(trim_val < lower_lim) = lower_lim ;
+% disp(['max: ' num2str(upper_lim) ])
+% disp(['minnnn: ' num2str(lower_lim) ])
 
-% get the edges of the bins, number of bins equal to how many cmap entries
-% there are; this way, each bin represents one color
-[~,hist_edges] = histcounts(trim_val,num_bins) ;
+% % trim data
+trim_val = valid_val .* 1 ;
+
+up_lim_ind = valid_val >= upper_lim ;
+low_lim_ind = valid_val <= lower_lim ;
+
+trim_val(up_lim_ind) = upper_lim ;
+trim_val(low_lim_ind) = lower_lim ;
+
+% % get the edges of the bins, number of bins equal to how many cmap entries
+% % there are; this way, each bin represents one color
+% [~,hist_edges] = histcounts(trim_val,num_bins) ;
+hist_edges = linspace(lower_lim,upper_lim,num_bins+1); % same as above, but
+% also works when lims are not in range of data
 
 % assign each vertex datapoint into a bin
 tmp_ind = discretize(trim_val,hist_edges) ;
-
+ 
 % copy the input vals
 dir_ind = dataVec .* 1 ;
 
@@ -71,3 +80,5 @@ else
     
     dir_ind(dataVec ~= val_unkwn) = tmp_ind ;
 end
+
+outRange = [ lower_lim upper_lim ] ;

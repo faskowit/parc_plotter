@@ -1,30 +1,34 @@
 function [h] = parc_plot(...
-    surfStruct,annotMap,annotName,dataVec,cMap,border,viewStr,viewCmap)
+    surfStruct,annotMap,annotName,dataVec,... % required args
+    varargin)
+    %cMap,border,viewStr,viewCmap) % opt args
 % function to plot some parcellations and some data in those parcs
+
+%   varargin        value
+%   ~~~~~~~~        ~~~~~
+%
+%   'cMap'          colormap (N x 3)
+%   'border'        add grey boarder around parcels (bool)
+%   'viewStr'       str opts: 'all' 'lh:lat' 'lh:med' 'rh:lat' 'rh:med'
+%   'viewCamp'      plot additional plot to render colormap (bool)
+%   'valRange'      restrict plotting to this value range ([ low high ])
+
 
 if nargin < 4
    error('minimally needs the first four args') 
 end
 
-if ~exist('cMap','var') || isempty(cMap)
-    cMap = [ 0.5 0.5 0.5 ; % grey medial wall
-            brewermap(100,'Spectral') ] ; 
-else
-    cMap = [ 0.5 0.5 0.5 ; % grey medial wall
-            cMap ] ;
-end
+%% input parsting
 
-if ~exist('border','var') || isempty(border)
-   border = 1 ;  
-end
-
-if ~exist('viewStr','var') || isempty(viewStr)
-   viewStr = 'all' ;
-end
-
-if ~exist('viewCmap','var') || isempty(viewCmap)
-    viewCmap = 0 ;
-end
+p = inputParser ;
+% addParameter(p,paramName,defaultVal)
+addParameter(p,'cMap',brewermap(100,'Spectral'))
+addParameter(p,'border',1)
+addParameter(p,'valRange',[])
+addParameter(p,'viewStr','all')
+addParameter(p,'viewcMap',[])
+parse(p, varargin{:})
+p.Results
 
 %% setup stuff
 
@@ -33,6 +37,9 @@ dataVec = dataVec(:) ;
 
 % first load up the annotation 
 annotStruct = annotMap(annotName) ;
+
+% add middle area color, grey
+cMap = [ 0.5 0.5 0.5 ; p.Results.cMap ] ;
 
 %% do your thing
 
@@ -50,8 +57,8 @@ plotStruct.RH.nodeVals = ...
     vals_2_nodes(annotStruct.RH.labs,annotStruct.roi_ids,dataVec) ;
 
 % convert values into color map inds
-allNodesCmapInd = vals_2_direct_inds(...
-    [plotStruct.LH.nodeVals ; plotStruct.RH.nodeVals], numBins, NaN) ;
+[allNodesCmapInd, figRange] = vals_2_direct_inds(...
+    [plotStruct.LH.nodeVals ; plotStruct.RH.nodeVals], numBins, NaN, p.Results.valRange) ;
 
 % move up the inds for the background
 allNodesCmapInd = allNodesCmapInd +1 ;
@@ -65,7 +72,7 @@ plotStruct.RH.nodeCmapInd(isnan(plotStruct.RH.nodeCmapInd))=1;
 
 %% plot borders?
 
-if border>0
+if p.Results.border
     plotStruct.LH.nodeCmapInd(annotStruct.LH.border>0) = 1 ;
     plotStruct.RH.nodeCmapInd(annotStruct.RH.border>0) = 1 ;
 end
@@ -76,13 +83,17 @@ figure
 h = viz_views(surfStruct,...
     plotStruct.LH.nodeCmapInd,...
     plotStruct.RH.nodeCmapInd,...
-    viewStr,'direct') ;
+    p.Results.viewStr,'direct') ;
 colormap(cMap)
 
-if viewCmap>0
+if p.Results.viewcMap
     % another figure just for colormap?
     figure
     imagesc(dataVec)
     colormap(cMap(2:end,:)); colorbar
+    caxis(figRange)
     axis off
+    colorbar('southoutside')
+    colorbar('northoutside')
+    colorbar('westoutside')
 end

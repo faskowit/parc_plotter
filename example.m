@@ -20,9 +20,14 @@ annotMap = annots.allAnnots ;
 annotName = 'schaefer200-yeo17' ;
 
 %dataVec = rand(200,1) ;
-dataVec = 1:200 ;
+dataVec = -150:49 ;
 
-parc_plot(surfStruct,annotMap,annotName,dataVec)
+parc_plot(surfStruct,annotMap,annotName,dataVec,...
+    'viewcMap',1)
+
+parc_plot(surfStruct,annotMap,annotName,dataVec,...
+    'Valrange', [-101 50],'viewcMap',1)
+
 
 %% plot some data with a cmap
 
@@ -30,14 +35,23 @@ annotName = 'schaefer400-yeo17' ;
 
 dataVec = 1:400 ;
 
-parc_plot(surfStruct,annotMap,annotName,dataVec,brewermap(15,'PiYG'))
+parc_plot(surfStruct,annotMap,annotName,dataVec,...
+    'cMap',brewermap(15,'PiYG'))
 
 %% plot the parc plot
 
-annotName = 'hcp-mmp-b' ;
+annotName = 'aparc' ;
 
 cmap = annotMap(annotName).combo_table(:,1:3) ./ 255 ;
 
+% addParameter(p,'cMap',[ 0.5 0.5 0.5 ; brewermap(100,'Spectral') ])
+% addParameter(p,'border',1)
+% addParameter(p,'valrange',[])
+% addParameter(p,'viewStr','all')
+% addParameter(p,'viewcMap',[])
+% parse(p, varargin{:})
+
 % function [h] = parc_plot(surfStruct,annotMap,annotName,dataVec,cMap,viewStr)
-parc_plot(surfStruct,annotMap,annotName,1:(size(cmap,1)),cmap)
+parc_plot(surfStruct,annotMap,annotName,1:(size(cmap,1)),...
+    'cMap',cmap, 'border',0)
 
