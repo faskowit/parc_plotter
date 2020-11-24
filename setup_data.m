@@ -9,6 +9,8 @@ addpath(genpath(strcat(pwd,'/src/external/')))
 
 %% load surface info and save as mat
 
+mkdir([pwd '/data/fsaverage/mat/])
+
 %for fff = {'sphere','smoothwm','inflated_pre','inflated'} 
 for fff = {'inflated'} 
    
