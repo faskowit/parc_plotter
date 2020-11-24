@@ -28,6 +28,9 @@ parc_plot(surfStruct,annotMap,annotName,dataVec,...
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
     'Valrange', [-101 50],'viewcMap',1)
 
+% for your real data, you can check the order that is expected by the function by running:
+% annotMap(annotName).combo_names
+% this will show you should provide
 
 %% plot some data with a cmap
 
