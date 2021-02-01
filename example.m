@@ -43,7 +43,7 @@ parc_plot(surfStruct,annotMap,annotName,dataVec,...
 
 %% plot the parc plot
 
-annotName = 'aparc' ;
+annotName = 'schaefer200-yeo17' ;
 
 cmap = annotMap(annotName).combo_table(:,1:3) ./ 255 ;
 
