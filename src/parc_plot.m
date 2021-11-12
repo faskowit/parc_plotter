@@ -12,6 +12,7 @@ function [h] = parc_plot(...
 %   'viewStr'       str opts: 'all' 'lh:lat' 'lh:med' 'rh:lat' 'rh:med'
 %   'viewCamp'      plot additional plot to render colormap (bool)
 %   'valRange'      restrict plotting to this value range ([ low high ])
+%   'newFig'        open a new fig or not (true)
 
 
 if nargin < 4
@@ -27,6 +28,7 @@ addParameter(p,'border',1)
 addParameter(p,'valRange',[])
 addParameter(p,'viewStr','all')
 addParameter(p,'viewcMap',[])
+addParameter(p,'newFig',1)
 parse(p, varargin{:})
 p.Results
 
@@ -79,7 +81,11 @@ end
 
 %% plot it
 
-figure
+if p.Results.newFig ; figure ; end
+aa = gca ;
+cla(aa,'reset') % clear current axis
+set(aa, 'visible', 'off')
+
 h = viz_views(surfStruct,...
     plotStruct.LH.nodeCmapInd,...
     plotStruct.RH.nodeCmapInd,...

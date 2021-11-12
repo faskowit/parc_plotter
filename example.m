@@ -23,10 +23,10 @@ annotName = 'schaefer200-yeo17' ;
 dataVec = -150:49 ;
 
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
-    'viewcMap',1)
+    'viewcMap',0)
 
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
-    'Valrange', [-101 50],'viewcMap',1)
+    'Valrange', [-101 200],'viewcMap',0,'newFig',0,'viewStr','lh:lat')
 
 % for your real data, you can check the order that is expected by the function by running:
 % annotMap(annotName).combo_names
