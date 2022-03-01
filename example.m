@@ -32,6 +32,12 @@ parc_plot(surfStruct,annotMap,annotName,dataVec,...
 % annotMap(annotName).combo_names
 % this will show you should provide
 
+annotName = 'Schaefer2018_200Parcels_7Networks_order' ;
+
+parc_plot(surfStruct,annotMap,annotName,dataVec,...
+    'viewcMap',0)
+
+
 %% plot some data with a cmap
 
 annotName = 'schaefer400-yeo17' ;

@@ -1,4 +1,4 @@
-function [h] = parc_plot(...
+function [h,outind] = parc_plot(...
     surfStruct,annotMap,annotName,dataVec,... % required args
     varargin)
     %cMap,border,viewStr,viewCmap) % opt args
@@ -102,4 +102,8 @@ if p.Results.viewcMap
     colorbar('southoutside')
     colorbar('northoutside')
     colorbar('westoutside')
+end
+
+if nargout > 1
+   outind = [  plotStruct.LH.nodeCmapInd ; plotStruct.RH.nodeCmapInd ] ;
 end
