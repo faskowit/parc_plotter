@@ -17,13 +17,16 @@ annotMap = annots.allAnnots ;
 
 %% plot some data
 
-annotName = 'schaefer200-yeo17' ;
+% annotName = 'schaefer200-yeo17' ;
+annotName = 'kong_200' ;
 
-%dataVec = rand(200,1) ;
-dataVec = -150:49 ;
+dataVec = rand(200,1) ;
+%dataVec = -150:49 ;
 
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
     'viewcMap',0)
+
+%%
 
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
     'Valrange', [-101 200],'viewcMap',0,'newFig',0,'viewStr','lh:lat')
@@ -32,7 +35,7 @@ parc_plot(surfStruct,annotMap,annotName,dataVec,...
 % annotMap(annotName).combo_names
 % this will show you should provide
 
-annotName = 'Schaefer2018_200Parcels_7Networks_order' ;
+annotName = 'schaefer7_200' ;
 
 parc_plot(surfStruct,annotMap,annotName,dataVec,...
     'viewcMap',0)

@@ -114,6 +114,7 @@ end
 for iii = [ 100 200 300 400 500 600 800 1000 ] 
 
     currName = ['Schaefer2018_' num2str(iii) 'Parcels_7Networks_order']
+    shortName = ['schaefer7_' num2str(iii) ] ;
     tmpAnnot = load_annotStruct([pwd '/data/'],'fsaverage',currName) ;
      
     tmpAnnot.combo_table = [ tmpAnnot.LH.ct.table(2:end,:) ; tmpAnnot.RH.ct.table(2:end,:) ] ;
@@ -125,7 +126,28 @@ for iii = [ 100 200 300 400 500 600 800 1000 ]
     tmpAnnot.RH.border = get_parc_borders(...
         tmpAnnot.RH.labs,surfStruct.RH.nbrs,0) ;
 
-    allAnnots(currName) = tmpAnnot ;
+    allAnnots(shortName) = tmpAnnot ;
+
+end
+
+%% kong2022
+
+for iii = [ 100 200 300 400 500 600 800 1000 ] 
+
+    currName = ['Schaefer2018_' num2str(iii) 'Parcels_Kong2022_17Networks_order'] 
+    shortName = ['kong_' num2str(iii) ] ;
+    tmpAnnot = load_annotStruct([pwd '/data/'],'fsaverage',currName) ;
+     
+    tmpAnnot.combo_table = [ tmpAnnot.LH.ct.table(2:end,:) ; tmpAnnot.RH.ct.table(2:end,:) ] ;
+    tmpAnnot.roi_ids = [ tmpAnnot.LH.ct.table(2:end,5) ; tmpAnnot.RH.ct.table(2:end,5) ] ;
+    tmpAnnot.combo_names = [ tmpAnnot.LH.ct.struct_names(2:end) ; tmpAnnot.RH.ct.struct_names(2:end) ] ;
+    
+    tmpAnnot.LH.border = get_parc_borders(...
+        tmpAnnot.LH.labs,surfStruct.LH.nbrs,0) ;
+    tmpAnnot.RH.border = get_parc_borders(...
+        tmpAnnot.RH.labs,surfStruct.RH.nbrs,0) ;
+
+    allAnnots(shortName) = tmpAnnot ;
 
 end
 

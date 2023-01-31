@@ -59,4 +59,4 @@ if strcmp(plotViewStr,'all') || strcmp(plotViewStr,'rh:med')
 end
 
 % need to set a shape so that the vertical gap is not so small
-set(gcf, 'Units', 'centimeters', 'OuterPosition', [0 0 24 17]);
+% set(gcf, 'Units', 'centimeters', 'OuterPosition', [0 0 24 17]);
