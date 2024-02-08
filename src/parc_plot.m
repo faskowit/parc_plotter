@@ -1,4 +1,4 @@
-function [h,outind] = parc_plot(...
+function [TL,h,outind] = parc_plot(...
     surfStruct,annotMap,annotName,dataVec,... % required args
     varargin)
     %cMap,border,viewStr,viewCmap) % opt args
@@ -29,6 +29,8 @@ addParameter(p,'valRange',[])
 addParameter(p,'viewStr','all')
 addParameter(p,'viewcMap',[])
 addParameter(p,'newFig',1)
+addParameter(p,'parenth',[])
+addParameter(p,'tilespan',[1 1])
 parse(p, varargin{:})
 p.Results
 
@@ -86,10 +88,11 @@ aa = gca ;
 cla(aa,'reset') % clear current axis
 set(aa, 'visible', 'off')
 
-h = viz_views(surfStruct,...
+[TL,h] = viz_views(surfStruct,...
     plotStruct.LH.nodeCmapInd,...
     plotStruct.RH.nodeCmapInd,...
-    p.Results.viewStr,'direct') ;
+    p.Results.viewStr,'direct',...
+    p.Results.parenth,p.Results.tilespan) ;
 colormap(cMap)
 
 if p.Results.viewcMap
@@ -97,7 +100,7 @@ if p.Results.viewcMap
     figure
     imagesc(dataVec)
     colormap(cMap(2:end,:)); colorbar
-    caxis(figRange)
+    clim(figRange)
     axis off
     colorbar('southoutside')
     colorbar('northoutside')
