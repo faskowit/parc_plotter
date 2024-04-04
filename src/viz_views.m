@@ -1,4 +1,4 @@
-function [ TLhandle, fig_hand ] = viz_views(surfStruct,LH_wei,RH_wei,plotViewStr,cmapStr,vizparent,tilespan)
+function [ TLhandle, fig_hand, tile_hand ] = viz_views(surfStruct,LH_wei,RH_wei,plotViewStr,cmapStr,vizparent,tilespan)
 
 if ~exist('plotViewStr','var') || isempty(plotViewStr)
     plotViewStr = 'all'; % weight for unknown vertices
@@ -104,13 +104,13 @@ TLhandle = tiledlayout(tlargs{:}) ;
 
 if strcmp(plotViewStr,'all') || strcmp(plotViewStr,'lh:lat') || ...
         strcmp(plotViewStr,'lat')
-    nexttile(TLhandle,tilespan)
+    tile_hand{1} = nexttile(TLhandle,tilespan) ; 
     fig_hand{1} = viz(surfStruct.LH,LH_wei,-90,cmapStr) ; 
 end
 
 if strcmp(plotViewStr,'all') || strcmp(plotViewStr,'rh:lat') || ...
         strcmp(plotViewStr,'lat')
-    nexttile(TLhandle,tilespan)
+    tile_hand{2} = nexttile(TLhandle,tilespan) ; 
     fig_hand{2} = viz(surfStruct.RH,RH_wei,90,cmapStr) ;     
 end
 
@@ -120,14 +120,14 @@ end
 
 if strcmp(plotViewStr,'all') || strcmp(plotViewStr,'lh:med') || ...
         strcmp(plotViewStr,'med')
-    nexttile(TLhandle,tilespan)
+    tile_hand{3} = nexttile(TLhandle,tilespan) ; 
     fig_hand{3} = viz(surfStruct.LH,LH_wei,90,cmapStr) ;     
 end
 
 
 if strcmp(plotViewStr,'all') || strcmp(plotViewStr,'rh:med') || ...
         strcmp(plotViewStr,'med')
-    nexttile(TLhandle,tilespan)
+    tile_hand{4} = nexttile(TLhandle,tilespan) ; 
     fig_hand{4} = viz(surfStruct.RH,RH_wei,-90,cmapStr) ;     
 end
 

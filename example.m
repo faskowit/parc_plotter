@@ -18,12 +18,13 @@ annotMap = annots.allAnnots ;
 %% plot some data
 
 % annotName = 'schaefer200-yeo17' ;
-annotName = 'kong_200' ;
+annotName = 'yan_200' ;
 
-dataVec = rand(200,1) ;
+% dataVec = rand(200,1) ;
 %dataVec = -150:49 ;
+dataVec = [ (1:2:200)' (1:2:200)'+1 ] ; 
 
-parc_plot(surfStruct,annotMap,annotName,dataVec,...
+parc_plot(surfStruct,annotMap,annotName,dataVec(:),...
     'viewcMap',0)
 
 %%

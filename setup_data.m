@@ -251,6 +251,49 @@ tmpAnnot.RH.border = get_parc_borders(...
 
 allAnnots(currName) = tmpAnnot ;
 
+%% add the yan 
+
+% calculate 5th column 
+% r + g*2^8 + b*2^16 + flag*2^24
+cal5th = @(r,g,b) r + g*(2^8) + b*(2^16) ; % there's never a flag
+
+for iii = [ 100 200 300 400 500 600 800 1000 ] 
+
+    currName = [ num2str(iii) 'Parcels_Yan_Yeo2011_17Networks'] 
+    shortName = ['yan_' num2str(iii) ] ;
+    tmpAnnot = load_annotStruct([pwd '/data/'],'fsaverage',currName) ;
+     
+    % need to add 1 to RH regions
+    tmpTable = zeros(size(tmpAnnot.RH.ct.table)) ;
+    % r + g*2^8 + b*2^16 + flag*2^24
+    tmpTable(:,1:4) = [ tmpAnnot.RH.ct.table(:,1) tmpAnnot.RH.ct.table(:,2)+1 ... % add one here
+    tmpAnnot.RH.ct.table(:,3) tmpAnnot.RH.ct.table(:,4) ] ;
+    tmpTable(:,5) = cal5th(tmpTable(:,1),tmpTable(:,2),tmpTable(:,3)) ;
+    
+    % now change the vals
+    new_rh_vec = zeros(length(tmpAnnot.RH.labs),1) ;
+    old_rh_labs = tmpAnnot.RH.ct.table(:,5) ;
+    for idx = 1:length(old_rh_labs)
+        
+        new_rh_vec(tmpAnnot.RH.labs==old_rh_labs(idx)) = tmpTable(idx,5) ;
+    end
+    tmpAnnot.RH.labs = new_rh_vec ;
+    
+    tmpAnnot.combo_table = [ tmpAnnot.LH.ct.table(2:end,:) ; tmpTable(2:end,:) ] ;
+    tmpAnnot.roi_ids = [ tmpAnnot.LH.ct.table(2:end,5) ; tmpTable(2:end,5) ] ;
+    tmpAnnot.combo_names = [ tmpAnnot.LH.ct.struct_names(2:end) ; tmpAnnot.RH.ct.struct_names(2:end) ] ;
+    
+    assert(length(unique(tmpAnnot.combo_table(:,5))),iii)
+
+    tmpAnnot.LH.border = get_parc_borders(...
+        tmpAnnot.LH.labs,surfStruct.LH.nbrs,0) ;
+    tmpAnnot.RH.border = get_parc_borders(...
+        tmpAnnot.RH.labs,surfStruct.RH.nbrs,0) ;
+
+    allAnnots(shortName) = tmpAnnot ;
+
+end
+
 %% save it
 
 fileName = [pwd '/data/fsaverage/mat/fsaverage_annots.mat' ] ;
